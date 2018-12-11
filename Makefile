@@ -14,37 +14,55 @@ ifeq ($(HOSTTYPE),)
 	HOSTTYPE := $(shell uname -m)_$(shell uname -s)
 endif
 
-NAME = libft_malloc_$HOSTTYPE.so
+NAME = libft_malloc_$(HOSTTYPE).so
 CC = clang
-FLAGS = -Werror -Wall -Wextra 
-INCLUDES = -I./includes -I./libft/includes
+FLAGS = -Werror -Wall -Wextra -Weverything -v -g
+FTEST = -Werror -Wall -Wextra -Weverything -v
+INCLUDES = -I./includes -I./libft/includes -pthread
+
+LINK = libft_malloc.so
 
 RM = rm -f
 
-SRCS =	srcs/malloc.c
+SRCS =	srcs/malloc.c \
+	srcs/init.c \
+	srcs/page.c \
+	srcs/arena.c \
+	srcs/tiny.c \
+	srcs/small.c \
+	srcs/large.c \
+	srcs/free.c \
+	srcs/cleaner.c \
+	srcs/resize.c \
+	srcs/realloc.c \
+	srcs/debug.c
 
 
 OBJS = $(SRCS:.c=.o)
 
 .c.o:
-	$(CC) $(FLAGS) $(INCLUDES) -o $@ -c $<
+	$(CC) $(FLAGS) -fPIC $(INCLUDES) -o $@ -c $<
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
 	@echo "Compiling"
 	@make -C ./libft
-	@$(CC) $(FLAGS) $(INCLUDES) $(OBJS) libft/libft.a -shared -o $(NAME) 
+	@$(CC) $(FLAGS) $(INCLUDES) $(OBJS) -shared -o $(NAME) -L./libft -lft -fPIC
+	@ln -sf libft_malloc_$(HOSTTYPE).so $(LINK)
 	@echo "Done"
 
 test: $(NAME)
+	$(CC) $(FTEST) $(INCLUDES) srcs/main.c -o test -L. -lft_malloc -Wl,-rpath,.
 
-	$(CC) $(FLAGS) $(INCLUDES) srcs/main.c libft_malloc_OSTTYPE.so -o test
+try: test
+	./test
 
 clean:
 	@echo "Cleaning"
 	@make -C ./libft clean
 	@$(RM) $(OBJS)
+	@$(RM) $(LINK)
 	@echo "Done"
 
 fclean: clean
