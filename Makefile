@@ -17,7 +17,7 @@ endif
 NAME = libft_malloc_$(HOSTTYPE).so
 CC = clang
 FLAGS = -Werror -Wall -Wextra -Weverything -v -g
-FTEST = -Werror -Wall -Wextra -Weverything -v
+FTEST = #-Werror -Wall -Wextra -Weverything -v
 INCLUDES = -I./includes -I./libft/includes -pthread
 
 LINK = libft_malloc.so
@@ -53,7 +53,7 @@ $(NAME): $(OBJS)
 	@echo "Done"
 
 test: $(NAME)
-	$(CC) $(FTEST) $(INCLUDES) srcs/main.c -o test -L. -lft_malloc -Wl,-rpath,.
+	$(CC) $(FTEST) $(INCLUDES) srcs/test.c -o test -L. -lft_malloc -Wl,-rpath,.
 
 try: test
 	./test

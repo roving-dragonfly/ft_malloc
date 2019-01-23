@@ -6,7 +6,7 @@
 /*   By: aalves <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/03 02:18:12 by aalves            #+#    #+#             */
-/*   Updated: 2018/02/03 05:07:08 by aalves           ###   ########.fr       */
+/*   Updated: 2019/1/22 15:32:45 by aalvess           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,7 @@
 # include <pthread.h>
 # include "libft.h"
 
-
-# define TINY 256
+# define TINY 255
 # define SMALL 4096
 
 # define T_TINY 1

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aalves <aalves@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/1/22 13:06:40 by aalves             #+#    #+#             */
+/*   Updated: 2019/1/23 07:07:21 by aalves            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 #include "malloc.h"
 
@@ -55,7 +67,6 @@ size_t	free_in_small(t_arena_header* header, void *p)
 		{
 			header->arena.small.size[i] = 0;
 			header->arena.small.offset[i] = 0;
-			ft_putstr("freed small\n");
 			i = 0;
 			while (i < 4)
 			{
@@ -77,6 +88,5 @@ size_t	free_in_large(t_arena_header* header, void *p)
 		return (0);
 	header->used = 0;
 	munmap(header->loc, header->arena.large.size);
-	ft_putstr("freed large\n");
 	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: aalves <aalves@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/29 20:31:52 by aalves            #+#    #+#             */
-/*   Updated: 2018/11/29 20:31:52 by aalves           ###   ########.fr       */
+/*   Updated: 2019/1/23 07:08:24 by aalvess           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,14 +51,12 @@ void	free(void *p)
 	if (!freed)
 	{
 		ft_putstr("Pointer being freed was not allocated\n");
-		ft_putstr("value ");
-		print_addr(p);
-		ft_putstr("\n");
+		pthread_mutex_unlock(&lock);
 		return ;
 	}
 	if (!freed->used)
 		clean_header_page(freed);
-	pthread_mutex_unlock(&lock);
+    pthread_mutex_unlock(&lock);
 }
 
 void	*realloc(void *p, size_t size)

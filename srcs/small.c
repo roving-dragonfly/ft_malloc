@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   small.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aalves <aalves@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/01/22 09:06:16 by aalves             #+#    #+#            */
+/*   Updated: 2019/01/23 07:28:04 by aalves           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 #include "malloc.h"
 
@@ -31,7 +43,6 @@ size_t			unused_small_space(t_arena_header *header, void *size)
 	return (0);
 }
 
-
 uint16_t		available_space_at_index(t_arena_header *header, uint16_t index)
 {
 	uint16_t	i;
@@ -46,6 +57,7 @@ uint16_t		available_space_at_index(t_arena_header *header, uint16_t index)
 		if (header->arena.small.offset[i])
 			return (header->arena.small.offset[i] -
 					(header->arena.small.offset[j] + header->arena.small.size[j]));
+
 		i++;
 	}
 	return ((uint16_t)g_manager.page_size -
@@ -55,17 +67,17 @@ uint16_t		available_space_at_index(t_arena_header *header, uint16_t index)
 void			*set_small_alloc(t_arena_header *header, uint16_t size)
 {
 	uint16_t	i;
-	uint16_t	total;
+	uint16_t	prev;
 
 	i = 0;
-	total = 0;
 	while (header->arena.small.size[i] || size > available_space_at_index(header, i))
-	{
-		total += header->arena.small.size[i];
 		i++;
-	}
+	prev = i ? i - 1 : 0;
+	while (prev > 0 && !header->arena.small.size[prev])
+		prev--;
+	header->arena.small.offset[i] = header->arena.small.size[prev] ?
+		header->arena.small.offset[prev] + header->arena.small.size[prev] : 0;
 	header->arena.small.size[i] = size;
-	header->arena.small.offset[i] = total;
 	header->used = 1;
 	return ((uint8_t*)header->loc + header->arena.small.offset[i]);
 }
@@ -86,7 +98,8 @@ void			print_small_alloc(t_arena_header *header)
 		{
 			print_addr((void*)((size_t)header->loc + header->arena.small.offset[i]));
 			ft_putstr(" - ");
-			print_addr((void*)((size_t)header->loc + header->arena.small.offset[i] + header->arena.small.size[i]));
+			print_addr((void*)((size_t)header->loc + header->arena.small.offset[i] +
+							   header->arena.small.size[i]));
 			ft_putstr(" : ");
 			ft_putstr(ft_static_ulltoa(header->arena.small.size[i]));
 			ft_putstr(" octets\n");

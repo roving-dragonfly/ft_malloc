@@ -6,7 +6,7 @@
 /*   By: aalves <aalves@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/11/29 20:37:43 by aalves            #+#    #+#             */
-/*   Updated: 2018/11/29 20:37:49 by aalves           ###   ########.fr       */
+/*   Updated: 2019/01/23 07:25:40 by aalves           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,6 @@ size_t		resize_small(t_arena_header *header, void *p, size_t size)
 		i++;
 	if (available_space_after_index(header, (uint16_t)i) >= size)
 	{
-		ft_putstr("asked for ");
-		ft_putstr(ft_static_ulltoa(size));
-		ft_putstr(" had ");
-		ft_putstr(ft_static_ulltoa(available_space_after_index(header, (uint16_t)i)));
-		ft_putstr("\n");
 		header->arena.small.size[i] = (uint16_t)size;
 		return (1);
 	}
@@ -72,7 +67,6 @@ uint16_t		available_space_after_index(t_arena_header *header, uint16_t index)
 
 	return ((uint16_t)g_manager.page_size - header->arena.small.offset[index]);
 }
-
 
 size_t		resize_large(t_arena_header *header, size_t size)
 {

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   page.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aalves <aalves@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/01/22 15:57:19 by aalves             #+#    #+#            */
+/*   Updated: 2019/01/23 07:26:07 by aalves            ###   ########.fr      */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 #include "malloc.h"
 
@@ -21,9 +33,6 @@ t_page_header	*new_header_page()
 		page->prev = prev;
 		prev->next = page;
 	}
-	ft_putstr("NEW PAGE : ");
-	ft_putstr(ft_static_ulltoa_base((size_t)page, "0123456789abcdef"));
-	ft_putstr("\n");
 	return (page);
 }
 
@@ -37,9 +46,6 @@ void			*new_arena_page()
 		g_manager.err = MMAP_FAILED;
 		return (NULL);
 	}
-	ft_putstr("NEW ARENA : ");
-	print_addr(arena);
-	ft_putstr("\n");
 	return (arena);
 }
 

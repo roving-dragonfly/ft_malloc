@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   tiny.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aalves <aalves@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/01/22 15:25:12 by aalves             #+#    #+#            */
+/*   Updated: 2019/01/23 07:28:39 by aalves            ###   ########.fr      */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "libft.h"
 #include "malloc.h"
 
@@ -21,9 +33,13 @@ size_t		unused_tiny_space(t_arena_header *header)
 	if (!(header->type == T_TINY))
 		return (0);
 	i = 0;
-	while (header->arena.tiny.size[i] && i < (g_manager.page_size / TINY))
+	while (i < 16)
+	{
+		if (!header->arena.tiny.size[i])
+			return (1);
 		i++;
-	return (i != g_manager.page_size / TINY ? 1 : 0);
+	}
+	return (0);
 }
 
 void			*set_tiny_alloc(t_arena_header *header, uint8_t size)
@@ -31,7 +47,7 @@ void			*set_tiny_alloc(t_arena_header *header, uint8_t size)
 	uint16_t i;
 
 	i = 0;
-	while (header->arena.tiny.size[i] && (i < g_manager.page_size / TINY))
+	while (header->arena.tiny.size[i])
 		i++;
 	header->arena.tiny.size[i] = size;
 	return ((uint8_t*)header->loc + (TINY * i));
